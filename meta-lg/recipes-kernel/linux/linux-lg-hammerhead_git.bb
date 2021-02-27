@@ -7,7 +7,7 @@ COMPATIBLE_MACHINE = "hammerhead"
 
 DESCRIPTION = "Kernel close to upstream with device specific patches intented to be mainlined.\
  Maintained by the PostmarketOS team."
-LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 #ANDROID_BOOTIMG_CMDLINE = "msm.vram=200m cma=300m g_mass_storage.removable=y LUNEOS_NO_OUTPUT_REDIRECT g_ffs.idVendor=0x18d1 g_ffs.idProduct=0xd001"
 ANDROID_BOOTIMG_CMDLINE = "LUNEOS_NO_OUTPUT_REDIRECT user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1 msm.vram=300m cma=500m pty.legacy_count=8"
@@ -20,15 +20,15 @@ inherit kernel_android
 LINUX_VERSION_EXTENSION = "-luneos"
 
 SRC_URI = " \
-    git://github.com/Tofee/linux-mainline-msm.git;branch=v5.5-nexus5 \
+    git://github.com/masneyb/linux.git;branch=v5.6-nexus5 \
     file://reversed-disable-gold-linker.patch \
     file://defconfig \
 "
 S = "${WORKDIR}/git"
 
-SRCREV = "c5ed0a1bf561cacd0fd5a3450ddfb1c6eab33ab2"
+SRCREV = "6492858d6e15dbe2b06d4129158bdc52c161af60"
 
-KV = "5.5"
+KV = "5.6"
 PV = "${KV}+gitr${SRCPV}"
 # for bumping PR bump MACHINE_KERNEL_PR in the machine config
 inherit machine_kernel_pr
