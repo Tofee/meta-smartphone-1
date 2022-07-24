@@ -10,7 +10,7 @@ DESCRIPTION = "Kernel close to upstream with device specific patches intented to
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 #ANDROID_BOOTIMG_CMDLINE = "msm.vram=200m cma=300m g_mass_storage.removable=y LUNEOS_NO_OUTPUT_REDIRECT g_ffs.idVendor=0x18d1 g_ffs.idProduct=0xd001"
-ANDROID_BOOTIMG_CMDLINE = "LUNEOS_NO_OUTPUT_REDIRECT user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1 msm.vram=300m cma=500m pty.legacy_count=8"
+ANDROID_BOOTIMG_CMDLINE = "LUNEOS_NO_OUTPUT_REDIRECT user_debug=31 maxcpus=2 msm_watchdog_v2.enable=1 msm.allow_vram_carveout=1 msm.vram=300m cma=500m pty.legacy_count=8"
 ANDROID_BOOTIMG_KERNEL_RAM_BASE = "0x00008000"
 ANDROID_BOOTIMG_RAMDISK_RAM_BASE = "0x02900000"
 ANDROID_BOOTIMG_SECOND_RAM_BASE = "0x00f00000"
@@ -18,23 +18,28 @@ ANDROID_BOOTIMG_TAGS_RAM_BASE = "0x02700000"
 
 inherit kernel_android
 
-LINUX_VERSION ?= "5.6"
+LINUX_VERSION ?= "5.19-rc7"
 LINUX_VERSION_EXTENSION = "-luneos"
-LINUX_KMETA_BRANCH = "yocto-${LINUX_VERSION}"
+#LINUX_KMETA_BRANCH = "yocto-${LINUX_VERSION}"
+LINUX_KMETA_BRANCH = "master"
 KMETA = "kernel-meta"
 
-SRCREV_machine = "6492858d6e15dbe2b06d4129158bdc52c161af60"
-SRCREV_meta = "b152cd93ea7046a835c869a76085aefdb6ce7421"
+SRCREV_machine = "ff6992735ade75aae3e35d16b17da1008d753d28"
+SRCREV_meta = "f55df88ad1b189c955984ead7f91389e2676e413"
 
 SRC_URI = " \
-    git://github.com/masneyb/linux.git;branch=v5.6-nexus5;protocol=https;name=machine \
+    git://github.com/torvalds/linux.git;branch=master;protocol=https;name=machine \
     git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${LINUX_KMETA_BRANCH};destsuffix=${KMETA};name=meta \
-    file://reversed-disable-gold-linker.patch \
+    file://0003-HACK-delay-rpm-init.patch \
+    file://0004-ARM-dts-qcom-msm8974-hammerhead-add-support-for-GPU.patch \
+    file://0005-fix-upstream-build-error.patch \
+    file://0006-Fix-some-DTS-issues-Adreno-activation-and-OCMEM.patch \
     file://defconfig \
 "
+
 S = "${WORKDIR}/git"
 
-KV = "5.6"
+KV = "5.19-rc7"
 PV = "${KV}+gitr${SRCPV}"
 # for bumping PR bump MACHINE_KERNEL_PR in the machine config
 inherit machine_kernel_pr

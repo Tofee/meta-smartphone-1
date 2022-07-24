@@ -1,0 +1,51 @@
+From c52ebb2cc1ea10b4dd2e411ae6ac67508a37e1e8 Mon Sep 17 00:00:00 2001
+From: Christophe Chapuis <chris.chapuis@gmail.com>
+Date: Sun, 24 Jul 2022 14:22:56 +0000
+Subject: [PATCH] Fix some DTS issues (Adreno activation and OCMEM)
+
+---
+ arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts | 8 ++++----
+ arch/arm/boot/dts/qcom-msm8974.dtsi                      | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
+index bd2df505a6fd..2c04ccb6c7c8 100644
+--- a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
++++ b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
+@@ -246,6 +246,10 @@ &mdss {
+ 	status = "okay";
+ };
+ 
++&gpu {
++	status = "okay";
++};
++
+ &otg {
+ 	status = "okay";
+ 
+@@ -269,10 +273,6 @@ phy@a {
+ 			qcom,init-seq = /bits/ 8 <0x1 0x64>;
+ 		};
+ 	};
+-
+-	adreno@fdb00000 {
+-		status = "okay";
+-	};
+ };
+ 
+ &pm8941_gpios {
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index c3b8a6d63027..bcb657de868b 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -1630,6 +1630,7 @@ ocmem@fdd00000 {
+ 			reg = <0xfdd00000 0x2000>,
+ 			      <0xfec00000 0x180000>;
+ 			reg-names = "ctrl", "mem";
++			ranges = <0 0xfec00000 0x180000>;
+ 			clocks = <&rpmcc RPM_SMD_OCMEMGX_CLK>,
+ 				 <&mmcc OCMEMCX_OCMEMNOC_CLK>;
+ 			clock-names = "core", "iface";
+-- 
+2.34.1
+
